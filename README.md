@@ -1,7 +1,7 @@
 GRUPO:
-FERNANDO AUGUSTO NEVES
-JOSÉ MARCOS NEVES
-YUDI GABRIEL KICHI
+Fernando Augusto Neves
+José Marcos Neves.
+Yudi Gabriel Kichi.
 
 # Repository of Software Architecture Artefacts
 

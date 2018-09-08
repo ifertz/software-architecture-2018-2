@@ -9,11 +9,13 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
+import edu.utfpr.cp.sa.dao.CountryDAO;
 import edu.utfpr.cp.sa.entity.Country;
 
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.JLabel;
@@ -27,8 +29,8 @@ class CountryTableModel extends AbstractTableModel {
 	private ArrayList<Country> countries;
 	private String columnNames[] = {"Name", "Acronym", "Phone Digits"};
 	
-	public CountryTableModel(Set<Country> countries) {
-		this.countries = new ArrayList<>(countries);
+	public CountryTableModel(List<Country> list) {
+		this.countries = new ArrayList<>(list);
 	}
 	
 	@Override
@@ -82,14 +84,24 @@ public class CountryWindow extends JFrame {
 		c.setName(name.getText());
 		c.setAcronym(acronym.getText());
 		c.setPhoneDigits(new Integer(phoneDigits.getText()));
-				
-		if (this.countries.add(c)) {
+		
+		
+		
+		if((new CountryDAO().findByName(name.getText()))==null){
+			new CountryDAO().insertCountry(c);
+			this.table.setModel(new CountryTableModel(new CountryDAO().findAll()));
+			JOptionPane.showMessageDialog(this, "Country successfully added!");
+		}
+		else{
+			JOptionPane.showMessageDialog(this, "Sorry, country already exists");			
+		}
+		/*if (this.countries.add(c)) {
 			JOptionPane.showMessageDialog(this, "Country successfully added!");
 			this.table.setModel(new CountryTableModel(countries));
 		
 		} else
 			JOptionPane.showMessageDialog(this, "Sorry, country already exists");
-		
+		*/
 	}
 	
 	public CountryWindow(Set<Country> countries) {
@@ -105,7 +117,7 @@ public class CountryWindow extends JFrame {
 		contentPane.add(panelTable, BorderLayout.CENTER);
 		
 		table = new JTable();
-		table.setModel(new CountryTableModel(countries));
+		table.setModel(new CountryTableModel(new CountryDAO().findAll()));
 		panelTable.setViewportView(table);
 		
 		JPanel panelInclusion = new JPanel();

@@ -9,6 +9,8 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
+import edu.utfpr.cp.sa.dao.CountryDAO;
+import edu.utfpr.cp.sa.dao.CustomerDAO;
 import edu.utfpr.cp.sa.entity.Country;
 import edu.utfpr.cp.sa.entity.Customer;
 
@@ -16,6 +18,7 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,8 +34,8 @@ class CustomerTableModel extends AbstractTableModel {
 	private ArrayList<Customer> customers;
 	private String columnNames[] = {"Name", "Phone", "Credit Limit", "Age", "Country"};
 	
-	public CustomerTableModel(Set<Customer> customers) {
-		this.customers = new ArrayList<>(customers);
+	public CustomerTableModel(List<Customer> list) {
+		this.customers = new ArrayList<>(list);
 	}
 	
 	@Override
@@ -92,14 +95,15 @@ public class CustomerWindow extends JFrame {
 	
 	private void create () {
 		Customer c = new Customer();
-		Country selected = countries
+		/*Country selected = countries
 								.stream()
 								.filter(
 										e -> e.getName()
 												.equalsIgnoreCase(
 														(String) country.getSelectedItem()))
 								.findFirst()
-								.get();
+								.get();*/
+		Country selected = new CountryDAO().findByName((String)country.getSelectedItem());
 		
 		try {
 			c.setCountry(selected);
@@ -129,15 +133,25 @@ public class CustomerWindow extends JFrame {
 			return;
 			
 		}
+		
+		if((new CustomerDAO().findByName(name.getText()))==null){
+			new CustomerDAO().insertCustomer(c);
+			this.table.setModel(new CustomerTableModel(new CustomerDAO().findAll()));
+			JOptionPane.showMessageDialog(this, "Customer successfully added!");
+			this.pack();
+		}
+		else{
+			JOptionPane.showMessageDialog(this, "Sorry, customer already exists");			
+		}
 						
-		if (this.customers.add(c)) {
+		/*if (this.customers.add(c)) {
 			JOptionPane.showMessageDialog(this, "Customer successfully added!");
 			this.table.setModel(new CustomerTableModel(customers));
 			this.pack();
 		
 		} else
 			JOptionPane.showMessageDialog(this, "Sorry, customer already exists");
-		
+		*/
 	}
 	
 	public CustomerWindow(Set<Customer> customers, Set<Country> countries) {
@@ -154,7 +168,7 @@ public class CustomerWindow extends JFrame {
 		contentPane.add(panelTable, BorderLayout.CENTER);
 		
 		table = new JTable();
-		table.setModel(new CustomerTableModel(customers));
+		table.setModel(new CustomerTableModel(new CustomerDAO().findAll()));
 		panelTable.setViewportView(table);
 		
 		JPanel panelInclusion = new JPanel();
@@ -185,7 +199,7 @@ public class CustomerWindow extends JFrame {
 		JLabel lblCountry = new JLabel("Country");
 		panelInclusion.add(lblCountry);
 		
-		country = new JComboBox<>(countries.stream().map(Country::getName).toArray(String[]::new));
+		country = new JComboBox<>(new CountryDAO().findAll().stream().map(Country::getName).toArray(String[]::new));
 		panelInclusion.add(country);
 		
 		JButton btnCreate = new JButton("Create");

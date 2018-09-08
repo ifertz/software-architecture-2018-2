@@ -2,10 +2,17 @@ package edu.utfpr.cp.sa.entity;
 
 public class Country {
 	
+	private int countryId;
 	private String name;
 	private String acronym;
 	private int phoneDigits;
 	
+	public int getCountryId(){
+		return countryId;
+	}
+	public void setCountryId(int countryId){
+		this.countryId = countryId;
+	}
 	public String getName() {
 		return name;
 	}

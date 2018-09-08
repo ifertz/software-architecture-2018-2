@@ -1,3 +1,8 @@
+GRUPO:
+FERNANDO AUGUSTO NEVES
+JOSÉ MARCOS NEVES
+YUDI GABRIEL KICHI
+
 # Repository of Software Architecture Artefacts
 
 This repository groups artefacts used on software architecture module. This module is delivered to undergraduate students of computer science-related courses at Universidade Tecnológica Federal do Paraná, Cornélio Procópio, Brazil.  

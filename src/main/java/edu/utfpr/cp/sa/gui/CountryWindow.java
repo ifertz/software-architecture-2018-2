@@ -68,6 +68,35 @@ class CountryTableModel extends AbstractTableModel {
 		return null;
 	}
 	
+	@Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return true;
+    }
+	
+	@Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        Country country= countries.get(rowIndex);
+
+        switch (columnIndex) {
+        case 0:
+            country.setName((String) aValue);
+            break;
+        case 1:
+            country.setAcronym((String) aValue);
+            break;
+        case 2:
+            country.setPhoneDigits((int) aValue);
+            break;
+        default:
+            throw new IndexOutOfBoundsException("columnIndex out of bounds");
+        }
+
+        fireTableCellUpdated(rowIndex, columnIndex); 
+	}
+	
+	public Country getCountry(int rowIndex){
+		return countries.get(rowIndex);
+	}
 }
 
 public class CountryWindow extends JFrame {
@@ -78,6 +107,7 @@ public class CountryWindow extends JFrame {
 	private JTextField phoneDigits;
 	private JTable table;
 	private Set<Country> countries;
+	private CountryTableModel ctm = new CountryTableModel(new CountryDAO().findAll());
 	
 	private void create () {
 		Country c = new Country();
@@ -102,6 +132,12 @@ public class CountryWindow extends JFrame {
 		} else
 			JOptionPane.showMessageDialog(this, "Sorry, country already exists");
 		*/
+		
+	}
+	
+	public void teste(){
+		Country cc = ctm.getCountry(table.getSelectedRow());
+		System.out.println(cc.getName());
 	}
 	
 	public CountryWindow(Set<Country> countries) {
@@ -117,7 +153,7 @@ public class CountryWindow extends JFrame {
 		contentPane.add(panelTable, BorderLayout.CENTER);
 		
 		table = new JTable();
-		table.setModel(new CountryTableModel(new CountryDAO().findAll()));
+		table.setModel(ctm);
 		panelTable.setViewportView(table);
 		
 		JPanel panelInclusion = new JPanel();
@@ -151,7 +187,8 @@ public class CountryWindow extends JFrame {
 		
 		JButton btnClose = new JButton("Close");
 		panelInclusion.add(btnClose);
-		btnClose.addActionListener(e -> this.dispose());
+		//btnClose.addActionListener(e -> this.dispose());
+		btnClose.addActionListener(e -> teste());
 		
 		this.pack();
 		this.setVisible(true);

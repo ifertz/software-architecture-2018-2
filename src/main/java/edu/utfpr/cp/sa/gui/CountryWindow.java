@@ -85,7 +85,7 @@ class CountryTableModel extends AbstractTableModel {
             country.setAcronym((String) aValue);
             break;
         case 2:
-            country.setPhoneDigits((int) aValue);
+            country.setPhoneDigits(Integer.parseInt((String) aValue));
             break;
         default:
             throw new IndexOutOfBoundsException("columnIndex out of bounds");

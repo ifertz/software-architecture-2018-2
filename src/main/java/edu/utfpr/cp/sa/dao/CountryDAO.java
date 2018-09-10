@@ -30,6 +30,24 @@ public class CountryDAO {
 		}
 	}
 	
+	public void updateCountry(Country country) {
+		try {
+			Connection con = new ConnectionFactory().getConnection();
+			String sql = "UPDATE Country SET name = ?, acronym = ?, phoneDigits = ? WHERE country_id = ?;";
+			
+			PreparedStatement stm = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);			
+			stm.setString(1, country.getName());
+			stm.setString(2, country.getAcronym());
+			stm.setInt(3, country.getPhoneDigits());
+			stm.setInt(4, country.getCountryId());
+			
+			stm.execute();
+			con.close();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
 	public List<Country> findAll(){
 		List<Country> countries = new ArrayList<Country>();
 		
@@ -90,6 +108,32 @@ public class CountryDAO {
 			
 			PreparedStatement stm = con.prepareStatement(sql);
 			stm.setInt(1, id);
+			ResultSet result = stm.executeQuery();
+			
+			if(result.next()){
+				c.setCountryId(result.getInt("country_id"));
+				c.setName(result.getString("name"));
+				c.setAcronym(result.getString("acronym"));
+				c.setPhoneDigits(result.getInt("phoneDigits"));
+			}
+			else{
+				c = null;
+			}
+			con.close();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return c;
+	}
+
+	public Country findByAcronym(String acronym) {
+		Country c = new Country();
+		try{
+			Connection con = new ConnectionFactory().getConnection();
+			String sql = "Select * from Country where acronym=?";
+			
+			PreparedStatement stm = con.prepareStatement(sql);
+			stm.setString(1, acronym);
 			ResultSet result = stm.executeQuery();
 			
 			if(result.next()){

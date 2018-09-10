@@ -21,8 +21,6 @@ import java.awt.event.ActionEvent;
 public class MainWindow extends JFrame {
 
 	private JPanel contentPane;
-	private Set<Customer> customers;
-	private Set<Country> countries;
 
 	/**
 	 * Launch the application.
@@ -44,8 +42,7 @@ public class MainWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public MainWindow() {
-		this.countries = new HashSet<>();
-		this.customers = new HashSet<>();
+	
 		
 		setTitle("Customer & Country Management");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,10 +53,10 @@ public class MainWindow extends JFrame {
 		
 		JButton btnCustomerManagement = new JButton("Customer Management");
 		contentPane.add(btnCustomerManagement);
-		btnCustomerManagement.addActionListener(e -> new CustomerWindow(customers, countries));
+		btnCustomerManagement.addActionListener(e -> new CustomerWindow());
 		
 		JButton btnCountryManagement = new JButton("Country Management");
-		btnCountryManagement.addActionListener(e -> new CountryWindow(countries));
+		btnCountryManagement.addActionListener(e -> new CountryWindow());
 		contentPane.add(btnCountryManagement);
 		
 		pack();

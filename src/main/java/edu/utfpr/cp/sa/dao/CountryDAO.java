@@ -33,9 +33,9 @@ public class CountryDAO {
 	public void updateCountry(Country country) {
 		try {
 			Connection con = new ConnectionFactory().getConnection();
-			String sql = "UPDATE Country SET name = ?, acronym = ?, phoneDigits = ? WHERE country_id = ?;";
+			String sql = "UPDATE Country SET name = initcap(?), acronym = ?, phoneDigits = ? WHERE country_id = ?;";
 			
-			PreparedStatement stm = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);			
+			PreparedStatement stm = con.prepareStatement(sql);			
 			stm.setString(1, country.getName());
 			stm.setString(2, country.getAcronym());
 			stm.setInt(3, country.getPhoneDigits());

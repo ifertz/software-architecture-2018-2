@@ -133,8 +133,6 @@ public class CustomerWindow extends JFrame {
 	private JComboBox<String> country;
 	private JTable table;
 	
-	private Set<Customer> customers;
-	private Set<Country> countries;
 	
 	private void create () {
 		Customer c = new Customer();
@@ -197,9 +195,8 @@ public class CustomerWindow extends JFrame {
 		*/
 	}
 	
-	public CustomerWindow(Set<Customer> customers, Set<Country> countries) {
-		this.customers = customers;
-		this.countries = countries;
+	public CustomerWindow() {
+		
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		contentPane = new JPanel();
@@ -236,27 +233,27 @@ public class CustomerWindow extends JFrame {
 		panelInclusion.add(phone);
 		phone.setColumns(10);
 		
-				JLabel lblAge = new JLabel("Age");
-				panelInclusion.add(lblAge);
+		JLabel lblAge = new JLabel("Age");
+		panelInclusion.add(lblAge);
 				
-				age = new JTextField();
-				panelInclusion.add(age);
-				age.setColumns(10);
+		age = new JTextField();
+		panelInclusion.add(age);
+		age.setColumns(10);
 				
-				JLabel lblCountry = new JLabel("Country");
-				panelInclusion.add(lblCountry);
+		JLabel lblCountry = new JLabel("Country");
+		panelInclusion.add(lblCountry);
 				
-				//country = new JComboBox<>();
-				country = new JComboBox<>(new CountryDAO().findAll().stream().map(Country::getName).toArray(String[]::new));
-				panelInclusion.add(country);
+		//country = new JComboBox<>();
+		country = new JComboBox<>(new CountryDAO().findAll().stream().map(Country::getName).toArray(String[]::new));
+		panelInclusion.add(country);
 				
-				JButton btnCreate = new JButton("Create");
-				panelInclusion.add(btnCreate);
+		JButton btnCreate = new JButton("Create");
+		panelInclusion.add(btnCreate);
 				
-				JButton btnClose = new JButton("Close");
-				panelInclusion.add(btnClose);
-				btnClose.addActionListener(e -> this.dispose());
-				btnCreate.addActionListener(e -> this.create());
+		JButton btnClose = new JButton("Close");
+		panelInclusion.add(btnClose);
+		btnClose.addActionListener(e -> this.dispose());
+		btnCreate.addActionListener(e -> this.create());
 		
 		JPanel panel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
@@ -272,7 +269,7 @@ public class CustomerWindow extends JFrame {
 		panel.add(btnDeletar);
 		
 		
-		JButton btnAlterar = new JButton("Alterar");
+		JButton btnAlterar = new JButton("Update");
 		panel.add(btnAlterar);
 		
 		JScrollPane panelTable = new JScrollPane();

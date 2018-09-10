@@ -112,7 +112,6 @@ public class CountryWindow extends JFrame {
 	private JTextField acronym;
 	private JTextField phoneDigits;
 	private JTable table;
-	private Set<Country> countries;
 	private CountryTableModel ctm = new CountryTableModel(new CountryDAO().findAll());
 	
 	private void create () {
@@ -155,8 +154,7 @@ public class CountryWindow extends JFrame {
 		System.out.println(c.getAcronym());
 	}
 	
-	public CountryWindow(Set<Country> countries) {
-		this.countries = countries;
+	public CountryWindow() {
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		contentPane = new JPanel();

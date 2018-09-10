@@ -130,28 +130,22 @@ public class CountryWindow extends JFrame {
 		else{
 			JOptionPane.showMessageDialog(this, "Sorry, country already exists");			
 		}
-		/*if (this.countries.add(c)) {
-			JOptionPane.showMessageDialog(this, "Country successfully added!");
-			this.table.setModel(new CountryTableModel(countries));
-		
-		} else
-			JOptionPane.showMessageDialog(this, "Sorry, country already exists");
-		*/
 		
 	}
 	
-	public void teste(){
+	public void update(){
 		Country c = ctm.getCountry(table.getSelectedRow());
-		if(new CountryDAO().findByName(c.getName()) == null) {
-			new CountryDAO().updateCountry(c);
-			this.table.setModel(new CountryTableModel(new CountryDAO().findAll()));
-			JOptionPane.showMessageDialog(this, "Data successfully updated");
-		}
-		else {
-			JOptionPane.showMessageDialog(this, "Sorry, country already exists");
-		}
-		System.out.println(c.getName());
-		System.out.println(c.getAcronym());
+		new CountryDAO().updateCountry(c);
+		this.table.setModel(new CountryTableModel(new CountryDAO().findAll()));
+		JOptionPane.showMessageDialog(this, "Data successfully updated");
+		
+	}
+	
+	public void delete(){
+		Country c = ctm.getCountry(table.getSelectedRow());
+		new CountryDAO().deleteCountry(c);
+		this.table.setModel(new CountryTableModel(new CountryDAO().findAll()));
+		JOptionPane.showMessageDialog(this, "Data successfully deleted");
 	}
 	
 	public CountryWindow() {
@@ -232,8 +226,11 @@ public class CountryWindow extends JFrame {
 		JButton btnAlterar = new JButton("Update");
 		panel.add(btnAlterar);
 		contentPane.setLayout(gl_contentPane);
-		//btnClose.addActionListener(e -> this.dispose());
-		btnClose.addActionListener(e -> teste());
+		
+		btnClose.addActionListener(e -> this.dispose());
+		btnAlterar.addActionListener(e -> update());
+		btnDeletar.addActionListener(e -> delete());
+		
 		
 		this.pack();
 		this.setVisible(true);

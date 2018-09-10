@@ -120,6 +120,9 @@ class CustomerTableModel extends AbstractTableModel {
         fireTableCellUpdated(rowIndex, columnIndex); 
 	}
 	
+	public Customer getCustomer(int rowIndex){
+		return customers.get(rowIndex);
+	}
 	
 	
 }
@@ -132,18 +135,11 @@ public class CustomerWindow extends JFrame {
 	private JTextField age;
 	private JComboBox<String> country;
 	private JTable table;
+	private CustomerTableModel cutm = new CustomerTableModel(new CustomerDAO().findAll());
 	
 	
 	private void create () {
 		Customer c = new Customer();
-		/*Country selected = countries
-								.stream()
-								.filter(
-										e -> e.getName()
-												.equalsIgnoreCase(
-														(String) country.getSelectedItem()))
-								.findFirst()
-								.get();*/
 		Country selected = new CountryDAO().findByName((String)country.getSelectedItem());
 		
 		try {
@@ -185,14 +181,21 @@ public class CustomerWindow extends JFrame {
 			JOptionPane.showMessageDialog(this, "Sorry, customer already exists");			
 		}
 						
-		/*if (this.customers.add(c)) {
-			JOptionPane.showMessageDialog(this, "Customer successfully added!");
-			this.table.setModel(new CustomerTableModel(customers));
-			this.pack();
+	}
+	
+	public void update(){
+		Customer c = cutm.getCustomer(table.getSelectedRow());
+		new CustomerDAO().updateCustomer(c);
+		this.table.setModel(new CustomerTableModel(new CustomerDAO().findAll()));
+		JOptionPane.showMessageDialog(this, "Data successfully updated");
 		
-		} else
-			JOptionPane.showMessageDialog(this, "Sorry, customer already exists");
-		*/
+	}
+	
+	public void delete(){
+		Customer c = cutm.getCustomer(table.getSelectedRow());
+		new CustomerDAO().deleteCustomer(c);
+		this.table.setModel(new CustomerTableModel(new CustomerDAO().findAll()));
+		JOptionPane.showMessageDialog(this, "Data successfully deleted");
 	}
 	
 	public CustomerWindow() {
@@ -243,7 +246,6 @@ public class CustomerWindow extends JFrame {
 		JLabel lblCountry = new JLabel("Country");
 		panelInclusion.add(lblCountry);
 				
-		//country = new JComboBox<>();
 		country = new JComboBox<>(new CountryDAO().findAll().stream().map(Country::getName).toArray(String[]::new));
 		panelInclusion.add(country);
 				
@@ -280,8 +282,11 @@ public class CustomerWindow extends JFrame {
 		contentPane.add(panelTable, gbc_panelTable);
 		
 		table = new JTable();
-		table.setModel(new CustomerTableModel(new CustomerDAO().findAll()));
+		table.setModel(cutm);
 		panelTable.setViewportView(table);
+		
+		btnAlterar.addActionListener(e -> update());
+		btnDeletar.addActionListener(e -> delete());
 		
 		this.pack();
 		this.setVisible(true);

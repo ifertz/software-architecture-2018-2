@@ -100,55 +100,18 @@ public class CountryDAO {
 		return c;
 	}
 	
-	public Country findById(int id){
-		Country c = new Country();
+	public void deleteCountry(Country country){
 		try{
 			Connection con = new ConnectionFactory().getConnection();
-			String sql = "Select * from Country where country_id=?";
-			
+			String sql = "Delete from Country where country_id=?";
+		
 			PreparedStatement stm = con.prepareStatement(sql);
-			stm.setInt(1, id);
-			ResultSet result = stm.executeQuery();
-			
-			if(result.next()){
-				c.setCountryId(result.getInt("country_id"));
-				c.setName(result.getString("name"));
-				c.setAcronym(result.getString("acronym"));
-				c.setPhoneDigits(result.getInt("phoneDigits"));
-			}
-			else{
-				c = null;
-			}
-			con.close();
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-		return c;
-	}
+			stm.setInt(1, country.getCountryId());
 
-	public Country findByAcronym(String acronym) {
-		Country c = new Country();
-		try{
-			Connection con = new ConnectionFactory().getConnection();
-			String sql = "Select * from Country where acronym=?";
-			
-			PreparedStatement stm = con.prepareStatement(sql);
-			stm.setString(1, acronym);
-			ResultSet result = stm.executeQuery();
-			
-			if(result.next()){
-				c.setCountryId(result.getInt("country_id"));
-				c.setName(result.getString("name"));
-				c.setAcronym(result.getString("acronym"));
-				c.setPhoneDigits(result.getInt("phoneDigits"));
-			}
-			else{
-				c = null;
-			}
+			stm.execute();
 			con.close();
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		return c;
 	}
 }

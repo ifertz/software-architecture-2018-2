@@ -34,6 +34,26 @@ public class CustomerDAO {
 		}
 	}
 	
+	public void updateCustomer(Customer customer) {
+		try {
+			Connection con = new ConnectionFactory().getConnection();
+			String sql = "UPDATE Customer SET name = initcap(?), phone = ?, age = ?, creditLimit = ?, country_id = ? WHERE customer_id = ?;";
+			
+			PreparedStatement stm = con.prepareStatement(sql);			
+			stm.setString(1, customer.getName());
+			stm.setString(2, customer.getPhone());
+			stm.setInt(3, customer.getAge());
+			stm.setDouble(4, customer.getCreditLimit());
+			stm.setInt(5, customer.getCountry().getCountryId());
+			stm.setInt(6, customer.getCustomerId());
+			
+			stm.execute();
+			con.close();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
 	public List<Customer> findAll(){
 		List<Customer> customers = new ArrayList<Customer>();
 		
@@ -101,5 +121,20 @@ public class CustomerDAO {
 			e.printStackTrace();
 		}
 		return cm;
+	}
+	
+	public void deleteCustomer(Customer customer){
+		try{
+			Connection con = new ConnectionFactory().getConnection();
+			String sql = "Delete from Customer where customer_id=?";
+		
+			PreparedStatement stm = con.prepareStatement(sql);
+			stm.setInt(1, customer.getCustomerId());
+
+			stm.execute();
+			con.close();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
 	}
 }

@@ -22,6 +22,9 @@ import edu.utfpr.cp.sa.dao.CountryDAO;
 import edu.utfpr.cp.sa.dao.CustomerDAO;
 import edu.utfpr.cp.sa.entity.Country;
 import edu.utfpr.cp.sa.entity.Customer;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 class CustomerTableModel extends AbstractTableModel {
 	
@@ -201,18 +204,22 @@ public class CustomerWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		
-		JScrollPane panelTable = new JScrollPane();
-		contentPane.add(panelTable, BorderLayout.CENTER);
-		
-		table = new JTable();
-		table.setModel(new CustomerTableModel(new CustomerDAO().findAll()));
-		panelTable.setViewportView(table);
+		GridBagLayout gbl_contentPane = new GridBagLayout();
+		gbl_contentPane.columnWidths = new int[]{452, 0};
+		gbl_contentPane.rowHeights = new int[]{115, 23, 427, 0};
+		gbl_contentPane.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		contentPane.setLayout(gbl_contentPane);
 		
 		JPanel panelInclusion = new JPanel();
-		contentPane.add(panelInclusion, BorderLayout.NORTH);
+		GridBagConstraints gbc_panelInclusion = new GridBagConstraints();
+		gbc_panelInclusion.anchor = GridBagConstraints.NORTH;
+		gbc_panelInclusion.fill = GridBagConstraints.HORIZONTAL;
+		gbc_panelInclusion.insets = new Insets(0, 0, 5, 0);
+		gbc_panelInclusion.gridx = 0;
+		gbc_panelInclusion.gridy = 0;
+		contentPane.add(panelInclusion, gbc_panelInclusion);
 		panelInclusion.setLayout(new GridLayout(5, 2, 0, 0));
 		
 		JLabel lblName = new JLabel("Name");
@@ -228,27 +235,54 @@ public class CustomerWindow extends JFrame {
 		phone = new JTextField();
 		panelInclusion.add(phone);
 		phone.setColumns(10);
-
-		JLabel lblAge = new JLabel("Age");
-		panelInclusion.add(lblAge);
 		
-		age = new JTextField();
-		panelInclusion.add(age);
-		age.setColumns(10);
+				JLabel lblAge = new JLabel("Age");
+				panelInclusion.add(lblAge);
+				
+				age = new JTextField();
+				panelInclusion.add(age);
+				age.setColumns(10);
+				
+				JLabel lblCountry = new JLabel("Country");
+				panelInclusion.add(lblCountry);
+				
+				country = new JComboBox<>(new CountryDAO().findAll().stream().map(Country::getName).toArray(String[]::new));
+				panelInclusion.add(country);
+				
+				JButton btnCreate = new JButton("Create");
+				panelInclusion.add(btnCreate);
+				btnCreate.addActionListener(e -> this.create());
+				
+				JButton btnClose = new JButton("Close");
+				panelInclusion.add(btnClose);
+				btnClose.addActionListener(e -> this.dispose());
 		
-		JLabel lblCountry = new JLabel("Country");
-		panelInclusion.add(lblCountry);
+		JPanel panel = new JPanel();
+		GridBagConstraints gbc_panel = new GridBagConstraints();
+		gbc_panel.fill = GridBagConstraints.HORIZONTAL;
+		gbc_panel.anchor = GridBagConstraints.NORTH;
+		gbc_panel.insets = new Insets(0, 0, 5, 0);
+		gbc_panel.gridx = 0;
+		gbc_panel.gridy = 1;
+		contentPane.add(panel, gbc_panel);
+		panel.setLayout(new GridLayout(0, 2, 0, 0));
 		
-		country = new JComboBox<>(new CountryDAO().findAll().stream().map(Country::getName).toArray(String[]::new));
-		panelInclusion.add(country);
+		JButton btnDeletar = new JButton("Delete");
+		panel.add(btnDeletar);
 		
-		JButton btnCreate = new JButton("Create");
-		panelInclusion.add(btnCreate);
-		btnCreate.addActionListener(e -> this.create());
+		JButton btnAlterar = new JButton("Alterar");
+		panel.add(btnAlterar);
 		
-		JButton btnClose = new JButton("Close");
-		panelInclusion.add(btnClose);
-		btnClose.addActionListener(e -> this.dispose());
+		JScrollPane panelTable = new JScrollPane();
+		GridBagConstraints gbc_panelTable = new GridBagConstraints();
+		gbc_panelTable.anchor = GridBagConstraints.NORTHWEST;
+		gbc_panelTable.gridx = 0;
+		gbc_panelTable.gridy = 2;
+		contentPane.add(panelTable, gbc_panelTable);
+		
+		table = new JTable();
+		table.setModel(new CustomerTableModel(new CustomerDAO().findAll()));
+		panelTable.setViewportView(table);
 		
 		this.pack();
 		this.setVisible(true);

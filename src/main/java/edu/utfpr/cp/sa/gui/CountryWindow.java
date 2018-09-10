@@ -23,6 +23,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JTable;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.BoxLayout;
 
 class CountryTableModel extends AbstractTableModel {
 	
@@ -155,18 +161,15 @@ public class CountryWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
 		JScrollPane panelTable = new JScrollPane();
-		contentPane.add(panelTable, BorderLayout.CENTER);
 		
 		table = new JTable();
 		table.setModel(ctm);
 		panelTable.setViewportView(table);
 		
 		JPanel panelInclusion = new JPanel();
-		contentPane.add(panelInclusion, BorderLayout.NORTH);
 		panelInclusion.setLayout(new GridLayout(4, 2, 0, 0));
 		
 		JLabel lblName = new JLabel("Name");
@@ -196,6 +199,41 @@ public class CountryWindow extends JFrame {
 		
 		JButton btnClose = new JButton("Close");
 		panelInclusion.add(btnClose);
+		
+		JPanel panel = new JPanel();
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
+						.addGroup(Alignment.LEADING, gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+							.addComponent(panelInclusion, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
+							.addComponent(panelTable, Alignment.LEADING)))
+					.addContainerGap())
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addComponent(panelInclusion, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panelTable, GroupLayout.PREFERRED_SIZE, 386, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		panel.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JButton btnDeletar = new JButton("Delete");
+		btnDeletar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		panel.add(btnDeletar);
+		
+		JButton btnAlterar = new JButton("Update");
+		panel.add(btnAlterar);
+		contentPane.setLayout(gl_contentPane);
 		//btnClose.addActionListener(e -> this.dispose());
 		btnClose.addActionListener(e -> teste());
 		

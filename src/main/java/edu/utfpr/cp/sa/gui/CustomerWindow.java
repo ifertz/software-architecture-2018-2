@@ -239,7 +239,7 @@ public class CustomerWindow extends JFrame {
 		JLabel lblCountry = new JLabel("Country");
 		panelInclusion.add(lblCountry);
 		
-		country = new JComboBox<>(new CountryDAO().findAll().stream().map(Country::getName).toArray(String[]::new));
+		//country = new JComboBox<>(new CountryDAO().findAll().stream().map(Country::getName).toArray(String[]::new));
 		panelInclusion.add(country);
 		
 		JButton btnCreate = new JButton("Create");

@@ -137,7 +137,7 @@ public class CountryWindow extends JFrame {
 	
 	public void teste(){
 		Country c = ctm.getCountry(table.getSelectedRow());
-		if(new CountryDAO().findByName(c.getName()) == null && new CountryDAO().findByAcronym(c.getAcronym()) == null) {
+		if(new CountryDAO().findByName(c.getName()) == null) {
 			new CountryDAO().updateCountry(c);
 			this.table.setModel(new CountryTableModel(new CountryDAO().findAll()));
 			JOptionPane.showMessageDialog(this, "Data successfully updated");

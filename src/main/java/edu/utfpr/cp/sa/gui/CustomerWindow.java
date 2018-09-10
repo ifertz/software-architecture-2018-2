@@ -246,16 +246,17 @@ public class CustomerWindow extends JFrame {
 				JLabel lblCountry = new JLabel("Country");
 				panelInclusion.add(lblCountry);
 				
+				//country = new JComboBox<>();
 				country = new JComboBox<>(new CountryDAO().findAll().stream().map(Country::getName).toArray(String[]::new));
 				panelInclusion.add(country);
 				
 				JButton btnCreate = new JButton("Create");
 				panelInclusion.add(btnCreate);
-				btnCreate.addActionListener(e -> this.create());
 				
 				JButton btnClose = new JButton("Close");
 				panelInclusion.add(btnClose);
 				btnClose.addActionListener(e -> this.dispose());
+				btnCreate.addActionListener(e -> this.create());
 		
 		JPanel panel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
@@ -269,8 +270,7 @@ public class CustomerWindow extends JFrame {
 		
 		JButton btnDeletar = new JButton("Delete");
 		panel.add(btnDeletar);
-		//country = new JComboBox<>(new CountryDAO().findAll().stream().map(Country::getName).toArray(String[]::new));
-		panelInclusion.add(country);
+		
 		
 		JButton btnAlterar = new JButton("Alterar");
 		panel.add(btnAlterar);

@@ -269,6 +269,8 @@ public class CustomerWindow extends JFrame {
 		
 		JButton btnDeletar = new JButton("Delete");
 		panel.add(btnDeletar);
+		//country = new JComboBox<>(new CountryDAO().findAll().stream().map(Country::getName).toArray(String[]::new));
+		panelInclusion.add(country);
 		
 		JButton btnAlterar = new JButton("Alterar");
 		panel.add(btnAlterar);

@@ -136,8 +136,17 @@ public class CountryWindow extends JFrame {
 	}
 	
 	public void teste(){
-		Country cc = ctm.getCountry(table.getSelectedRow());
-		System.out.println(cc.getName());
+		Country c = ctm.getCountry(table.getSelectedRow());
+		if(new CountryDAO().findByName(c.getName()) == null && new CountryDAO().findByAcronym(c.getAcronym()) == null) {
+			new CountryDAO().updateCountry(c);
+			this.table.setModel(new CountryTableModel(new CountryDAO().findAll()));
+			JOptionPane.showMessageDialog(this, "Data successfully updated");
+		}
+		else {
+			JOptionPane.showMessageDialog(this, "Sorry, country already exists");
+		}
+		System.out.println(c.getName());
+		System.out.println(c.getAcronym());
 	}
 	
 	public CountryWindow(Set<Country> countries) {

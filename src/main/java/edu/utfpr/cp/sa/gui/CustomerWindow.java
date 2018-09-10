@@ -1,11 +1,20 @@
 package edu.utfpr.cp.sa.gui;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
@@ -13,21 +22,6 @@ import edu.utfpr.cp.sa.dao.CountryDAO;
 import edu.utfpr.cp.sa.dao.CustomerDAO;
 import edu.utfpr.cp.sa.entity.Country;
 import edu.utfpr.cp.sa.entity.Customer;
-
-import java.awt.GridLayout;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JTable;
 
 class CustomerTableModel extends AbstractTableModel {
 	
@@ -78,6 +72,52 @@ class CustomerTableModel extends AbstractTableModel {
 		
 		return null;
 	}
+
+	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		return true;
+	}
+
+	@Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        Customer customer= customers.get(rowIndex);
+
+        switch (columnIndex) {
+        case 0:
+            try {
+				customer.setName((String) aValue);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+            break;
+        case 1:
+            try {
+				customer.setPhone((String) aValue);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+            break;
+        case 2:
+			customer.setCreditLimit(Double.parseDouble((String) aValue));
+			break;
+		case 3:
+			customer.setAge(Integer.parseInt((String) aValue));
+			break;
+		case 4:
+			try {
+				customer.setCountry(new CountryDAO().findByName((String) aValue));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        default:
+            throw new IndexOutOfBoundsException("columnIndex out of bounds");
+        }
+
+        fireTableCellUpdated(rowIndex, columnIndex); 
+	}
+	
+	
 	
 }
 

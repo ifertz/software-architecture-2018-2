@@ -10,7 +10,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
 import edu.utfpr.cp.sa.dao.CountryDAO;
+import edu.utfpr.cp.sa.dao.CustomerDAO;
 import edu.utfpr.cp.sa.entity.Country;
+import edu.utfpr.cp.sa.entity.Customer;
 
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -108,6 +110,15 @@ public class CountryWindow extends JFrame {
 	private JTable table;
 	private Set<Country> countries;
 	private CountryTableModel ctm = new CountryTableModel(new CountryDAO().findAll());
+	
+	private void delete() {
+		
+		Country ce = ctm.getCountry(table.getSelectedRow());
+		
+		new CountryDAO().deleteCountry(ce);
+		this.table.setModel(new CountryTableModel(new CountryDAO().findAll()));
+		this.pack();
+	}
 	
 	private void create () {
 		Country c = new Country();

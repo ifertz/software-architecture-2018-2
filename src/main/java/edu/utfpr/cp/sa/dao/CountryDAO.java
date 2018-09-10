@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import edu.utfpr.cp.sa.entity.Country;
+import edu.utfpr.cp.sa.entity.Customer;
 
 public class CountryDAO {
 	
@@ -29,7 +30,26 @@ public class CountryDAO {
 			e.printStackTrace();
 		}
 	}
-	
+		
+	public void deleteCountry(Country country) {
+			
+			try {
+				
+				Connection con = new ConnectionFactory().getConnection();
+				String sql = "Delete from country where name = ?";
+				
+				PreparedStatement stm = con.prepareStatement(sql);
+				stm.setString(1, country.getName());
+				
+				stm.execute();
+				con.close();
+				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
 	public List<Country> findAll(){
 		List<Country> countries = new ArrayList<Country>();
 		

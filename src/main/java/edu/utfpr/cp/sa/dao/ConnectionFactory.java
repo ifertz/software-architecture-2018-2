@@ -9,7 +9,7 @@ public class ConnectionFactory {
 	public Connection getConnection(){
 		String dbURL = "jdbc:postgresql://localhost:5432/ArqSoft";
 		String username = "postgres";
-		String password = "1234";
+		String password = "2457";
 		try {
 			return DriverManager.getConnection(dbURL, username, password);
 		} catch (SQLException e) {

@@ -34,6 +34,25 @@ public class CustomerDAO {
 		}
 	}
 	
+	public void deleteCustomer(Customer customer) {
+		
+		try {
+			
+			Connection con = new ConnectionFactory().getConnection();
+			String sql = "Delete from customer where name = ?";
+			
+			PreparedStatement stm = con.prepareStatement(sql);
+			stm.setString(1, customer.getName());
+			
+			stm.execute();
+			con.close();
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public List<Customer> findAll(){
 		List<Customer> customers = new ArrayList<Customer>();
 		

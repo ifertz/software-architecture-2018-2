@@ -75,11 +75,16 @@ class CustomerTableModel extends AbstractTableModel {
 			default:
 				break;
 		}
-		
+			
 		return null;
 	}
 	
+	public Customer getCustomer (int rowIndex1){
+		return customers.get(rowIndex1);
+	}
+	
 }
+
 
 public class CustomerWindow extends JFrame {
 
@@ -92,6 +97,16 @@ public class CustomerWindow extends JFrame {
 	
 	private Set<Customer> customers;
 	private Set<Country> countries;
+	private CustomerTableModel cutm = new CustomerTableModel(new CustomerDAO().findAll());
+
+	
+	private void delete() {
+		Customer ce = cutm.getCustomer(table.getSelectedRow());
+		
+		new CustomerDAO().deleteCustomer(ce);
+		this.table.setModel(new CustomerTableModel(new CustomerDAO().findAll()));
+		this.pack();
+	}
 	
 	private void create () {
 		Customer c = new Customer();
@@ -204,11 +219,12 @@ public class CustomerWindow extends JFrame {
 		
 		JButton btnCreate = new JButton("Create");
 		panelInclusion.add(btnCreate);
-		btnCreate.addActionListener(e -> this.create());
 		
 		JButton btnClose = new JButton("Close");
 		panelInclusion.add(btnClose);
+		
 		btnClose.addActionListener(e -> this.dispose());
+		btnCreate.addActionListener(e -> this.create());
 		
 		this.pack();
 		this.setVisible(true);
